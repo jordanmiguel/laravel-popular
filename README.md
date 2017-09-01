@@ -74,22 +74,11 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Testing
 
-``` bash
-$ composer test
-```
+There is no test setup yet, please pull request if you do it =)
 
 ## Contributing
 
 Feel free to Pull Request anytime!
-
-## Security
-
-If you discover any security related issues, please email :author_email instead of using the issue tracker.
-
-## Credits
-
-- [Jordan Miguel][link-author]
-- [All Contributors][link-contributors]
 
 ## License
 
