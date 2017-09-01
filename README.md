@@ -1,7 +1,8 @@
 # Laravel Popular (Laravel Popularity)
 
-[![Latest Version on Packagist][ico-version]](https://packagist.org/packages/jordanmiguel/laravel-popular)
-[![Software License][ico-license]](LICENSE.md)
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Total Downloads][ico-downloads]][link-downloads]
+[![Software License][ico-license]](license.md)
 
 With Laravel Popular Package you can Track your most popular Eloquent Models based on hits in a time range and then sort by popularity in a time frame.
 
