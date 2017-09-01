@@ -1,4 +1,4 @@
-# Laravel Popular
+# Laravel Popular (Laravel Popularity)
 
 [![Latest Version on Packagist][ico-version]](https://packagist.org/packages/jordanmiguel/laravel-popular)
 [![Software License][ico-license]](LICENSE.md)
@@ -79,6 +79,9 @@ There is no test setup yet, please pull request if you do it =)
 ## Contributing
 
 Feel free to Pull Request anytime!
+
+## Author
+- [Jordan Miguel](https://www.linkedin.com/in/joordanmiguel/)
 
 ## License
 
