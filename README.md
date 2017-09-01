@@ -1,42 +1,72 @@
 # Laravel Popular
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Latest Version on Packagist][ico-version]](https://packagist.org/packages/jordanmiguel/laravel-popular)
 [![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
-[![Total Downloads][ico-downloads]][link-downloads]
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+With Laravel Popular Package you can Track your most popular Eloquent Models based on hits in a time range and then sort by popularity in a time frame.
 
-## Structure
+## Usage
 
-If any of the following are applicable to your project, then the directory structure should follow industry best practises by being named the following.
+Use the visitable trait on the model you intend to track
+``` php
+use \JordanMiguel\LaravelPopular\Traits\Visitable;
 
-```
-bin/        
-config/
-src/
-tests/
-vendor/
+class Post extends Model
+{
+    use Visitable;
+
+    ...
+}
 ```
 
+Here are some code examples:
+
+``` php
+// Adding a visit to the post. Recommended on the show() method of your controller.
+$post->visit();
+
+// Retrieving the count of visitors in a timeframe
+$post->visitsForever();
+$post->visitsMonth();
+$post->visitsWeek();
+$post->visitsDay();
+
+// Ordering the posts by the most visited
+Posts::popularLast(3)->get(); // Get popular posts on the last 3 days
+
+Posts::popularDay()->get(); // Get posts ordered by the most visited on the last 24h
+Posts::popularWeek()->get();
+Posts::popularMonth()->get();
+```
 
 ## Install
 
 Via Composer
 
 ``` bash
-$ composer require :vendor/:package_name
+$ composer require jordanmiguel/laravel-popular
 ```
 
-## Usage
+If you're on Laravel <= 5.4 add `'JordanMiguel\LaravelPopular\LaravelPopularServiceProvider::class',` in your `config/app.php` to the end of the `$providers` array
 
 ``` php
-$skeleton = new League\Skeleton();
-echo $skeleton->echoPhrase('Hello, League!');
+'providers' => array(
+
+    'Illuminate\Foundation\Providers\ArtisanServiceProvider',
+    'Illuminate\Auth\AuthServiceProvider',
+    ...
+    'JordanMiguel\LaravelPopular\LaravelPopularServiceProvider::class',
+
+),
 ```
+
+Now, let's create our table on the database:
+
+``` bash
+$ php artisan migrate
+```
+
+We're ready!
 
 ## Change log
 
