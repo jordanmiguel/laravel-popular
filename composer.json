@@ -1,7 +1,7 @@
 {
-    "name": "JordanMiguel/laravel-popular",
+    "name": "jordanmiguel/laravel-popular",
     "type": "library",
-    "description": ":package_description",
+    "description": "A Laravel package for tracking popular entries(by Models) of a website in a certain time.",
     "keywords": [
         "JordanMiguel",
         "laravel-popular",
