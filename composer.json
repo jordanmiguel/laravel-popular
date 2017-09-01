@@ -46,10 +46,6 @@
           "providers": [
             "JordanMiguel\\LaravelPopular\\LaravelPopularServiceProvider"
           ]
-        },
-
-        "branch-alias": {
-            "dev-master": "1.0-dev"
         }
     },
     "config": {
