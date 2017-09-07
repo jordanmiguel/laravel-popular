@@ -37,6 +37,7 @@ Posts::popularLast(3)->get(); // Get popular posts on the last 3 days
 Posts::popularDay()->get(); // Get posts ordered by the most visited on the last 24h
 Posts::popularWeek()->get();
 Posts::popularMonth()->get();
+Posts::popularAllTime()->get();
 ```
 
 ## Install
@@ -67,10 +68,6 @@ $ php artisan migrate
 ```
 
 We're ready!
-
-## Change log
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
 ## Testing
 

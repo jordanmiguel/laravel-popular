@@ -111,6 +111,16 @@ trait Visitable
     }
 
     /**
+     * Filter by popular in the last 30 days
+     * @param $query
+     * @return mixed
+     */
+    public function scopePopularAllTime($query)
+    {
+        return $query->withCount('visits')->orderBy('visits_count', 'desc');
+    }
+
+    /**
      * Return the visits of the model in the last ($days) days
      * @return mixed
      */
