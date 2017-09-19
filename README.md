@@ -26,10 +26,10 @@ Here are some code examples:
 $post->visit();
 
 // Retrieving the count of visitors in a timeframe
-$post->visitsForever();
-$post->visitsMonth();
-$post->visitsWeek();
 $post->visitsDay();
+$post->visitsWeek();
+$post->visitsMonth();
+$post->visitsForever();
 
 // Ordering the posts by the most visited
 Posts::popularLast(3)->get(); // Get popular posts on the last 3 days
@@ -37,6 +37,7 @@ Posts::popularLast(3)->get(); // Get popular posts on the last 3 days
 Posts::popularDay()->get(); // Get posts ordered by the most visited on the last 24h
 Posts::popularWeek()->get();
 Posts::popularMonth()->get();
+Posts::popularYear()->get();
 Posts::popularAllTime()->get();
 ```
 

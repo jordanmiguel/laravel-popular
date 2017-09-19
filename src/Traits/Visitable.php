@@ -33,16 +33,6 @@ trait Visitable
     }
 
     /**
-     * Return the count of visits since system was installed
-     * @return mixed
-     */
-    public function visitsForever()
-    {
-        return $this->visits()
-            ->count();
-    }
-
-    /**
      * Return count of the visits in the last day
      * @return mixed
      */
@@ -70,6 +60,16 @@ trait Visitable
     }
 
     /**
+     * Return the count of visits since system was installed
+     * @return mixed
+     */
+    public function visitsForever()
+    {
+        return $this->visits()
+            ->count();
+    }
+
+    /**
      * Filter by popular in the last $days days
      * @param $query
      * @param $days
@@ -77,7 +77,7 @@ trait Visitable
      */
     public function scopePopularLast($query, $days)
     {
-        return $this->popularLast($query, $days);
+        return $this->queryPopularLast($query, $days);
     }
 
     /**
@@ -87,7 +87,7 @@ trait Visitable
      */
     public function scopePopularDay($query)
     {
-        return $this->popularLast($query, 1);
+        return $this->queryPopularLast($query, 1);
     }
 
     /**
@@ -97,7 +97,7 @@ trait Visitable
      */
     public function scopePopularWeek($query)
     {
-        return $this->popularLast($query, 7);
+        return $this->queryPopularLast($query, 7);
     }
 
     /**
@@ -107,11 +107,21 @@ trait Visitable
      */
     public function scopePopularMonth($query)
     {
-        return $this->popularLast($query, 30);
+        return $this->queryPopularLast($query, 30);
     }
 
     /**
-     * Filter by popular in the last 30 days
+     * Filter by popular in the last 365 days
+     * @param $query
+     * @return mixed
+     */
+    public function scopePopularYear($query)
+    {
+        return $this->queryPopularLast($query, 365);
+    }
+
+    /**
+     * Filter by popular in all time
      * @param $query
      * @return mixed
      */
@@ -137,7 +147,7 @@ trait Visitable
      * @param $days
      * @return mixed
      */
-    public function popularLast($query, $days)
+    public function queryPopularLast($query, $days)
     {
         return $query->withCount(['visits' => function ($query) use ($days) {
             $query->where('date', '>=', Carbon::now()->subDays($days)->toDateString());
