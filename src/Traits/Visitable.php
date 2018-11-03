@@ -12,10 +12,15 @@ trait Visitable
      * (Registers unique visitors)
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function visit()
+    public function visit($ip)
     {
+        if(isset($ip)){
+            $ip = $ip;
+        } else{
+            $ip = request()->ip();
+        }
         return Visit::firstOrCreate([
-            'ip' => request()->ip(),
+            'ip' => $ip,
             'date' => Carbon::now()->toDateString(),
 
             'visitable_id' => $this->id,
