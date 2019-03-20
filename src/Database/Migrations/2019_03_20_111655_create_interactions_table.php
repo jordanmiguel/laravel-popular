@@ -28,7 +28,11 @@ class CreateInteractionsTable extends Migration
             $table->unique(['visitor', 'interactionable_id', 'interactionable_type', 'date', 'category'], 'interactions_unique');
         });
 
-        // TODO: migrate exiting data
+        if (Schema::hasTable('visits')) {
+            DB::statement("INSERT INTO interactions
+                (visitor, interactionable_id, interactionable_type, `date`, created_at, updated_at, category)
+                SELECT ip, viewable_id, viewable_type, `date`, created_at, updated_at, 'view' FROM views");
+        }
 
         Schema::dropIfExists('visits');
     }
