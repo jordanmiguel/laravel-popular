@@ -31,7 +31,7 @@ class CreateInteractionsTable extends Migration
         if (Schema::hasTable('visits')) {
             DB::statement("INSERT INTO interactions
                 (visitor, interactionable_id, interactionable_type, `date`, created_at, updated_at, category)
-                SELECT ip, viewable_id, viewable_type, `date`, created_at, updated_at, 'view' FROM views");
+                SELECT ip, visitable_id, visitable_type, `date`, created_at, updated_at, 'visit' FROM visits");
         }
 
         Schema::dropIfExists('visits');
