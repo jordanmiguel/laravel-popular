@@ -44,6 +44,6 @@ class CreateInteractionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hits');
+        //
     }
 }
