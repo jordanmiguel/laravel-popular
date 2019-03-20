@@ -2,8 +2,8 @@
 
 namespace JordanMiguel\LaravelPopular\Traits;
 
-use JordanMiguel\LaravelPopular\Models\Visit;
 use Carbon\Carbon;
+use JordanMiguel\LaravelPopular\Models\Visit;
 
 trait Visitable
 {
@@ -14,14 +14,13 @@ trait Visitable
      */
     public function visit($ip = '')
     {
-        if(empty($ip)){
+        if (empty($ip)) {
             $ip = request()->ip();
         }
-        
+
         return Visit::firstOrCreate([
             'ip' => $ip,
             'date' => Carbon::now()->toDateString(),
-
             'visitable_id' => $this->id,
             'visitable_type' => (new \ReflectionClass($this))->getName(),
         ]);
