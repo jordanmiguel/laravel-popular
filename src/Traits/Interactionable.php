@@ -42,40 +42,45 @@ trait Interactionable
     }
 
     /**
-     * Return count of the visits in the last day
+     * Return count of the interactions in the last day
      * @return mixed
      */
-    public function interactionsDay()
+    public function interactionsDay($category = null)
     {
-        return $this->visitsLast(1);
+        return $this->interactionsLast(1, $category);
     }
 
     /**
-     * Return count of the visits in the last 7 days
+     * Return count of the interactions in the last 7 days
      * @return mixed
      */
-    public function interactionsWeek()
+    public function interactionsWeek($category = null)
     {
-        return $this->visitsLast(7);
+        return $this->interactionsLast(7, $category);
     }
 
     /**
-     * Return count of the visits in the last 30 days
+     * Return count of the interactions in the last 30 days
      * @return mixed
      */
-    public function interactionsMonth()
+    public function interactionsMonth($category = null)
     {
-        return $this->visitsLast(30);
+        return $this->interactionsLast(30, $category);
     }
 
     /**
-     * Return the count of visits since system was installed
+     * Return the count of interactions since system was installed
      * @return mixed
      */
-    public function interactionsForever()
+    public function interactionsForever($category = null)
     {
-        return $this->interactions()
-            ->count();
+        $query = $this->interactions();
+
+        if ($category) {
+            $query->where('category', '=', $category);
+        }
+
+        return $query->count();
     }
 
     /**
@@ -84,9 +89,9 @@ trait Interactionable
      * @param $days
      * @return mixed
      */
-    public function scopePopularLast($query, $days)
+    public function scopePopularLast($query, $days, $category = null)
     {
-        return $this->queryPopularLast($query, $days);
+        return $this->queryPopularLast($query, $days, $category);
     }
 
     /**
@@ -94,9 +99,9 @@ trait Interactionable
      * @param $query
      * @return mixed
      */
-    public function scopePopularDay($query)
+    public function scopePopularDay($query, $category = null)
     {
-        return $this->queryPopularLast($query, 1);
+        return $this->queryPopularLast($query, 1, $category);
     }
 
     /**
@@ -104,9 +109,9 @@ trait Interactionable
      * @param $query
      * @return mixed
      */
-    public function scopePopularWeek($query)
+    public function scopePopularWeek($query, $category = null)
     {
-        return $this->queryPopularLast($query, 7);
+        return $this->queryPopularLast($query, 7, $category);
     }
 
     /**
@@ -114,9 +119,9 @@ trait Interactionable
      * @param $query
      * @return mixed
      */
-    public function scopePopularMonth($query)
+    public function scopePopularMonth($query, $category = null)
     {
-        return $this->queryPopularLast($query, 30);
+        return $this->queryPopularLast($query, 30, $category);
     }
 
     /**
@@ -124,9 +129,9 @@ trait Interactionable
      * @param $query
      * @return mixed
      */
-    public function scopePopularYear($query)
+    public function scopePopularYear($query, $category = null)
     {
-        return $this->queryPopularLast($query, 365);
+        return $this->queryPopularLast($query, 365, $category);
     }
 
     /**
@@ -140,14 +145,19 @@ trait Interactionable
     }
 
     /**
-     * Return the visits of the model in the last ($days) days
+     * Return the interactions of the model in the last ($days) days
      * @return mixed
      */
-    public function interactionsLast($days)
+    public function interactionsLast($days, $category = null)
     {
-        return $this->interactions()
-            ->where('date', '>=', Carbon::now()->subDays($days)->toDateString())
-            ->count();
+        $query = $this->interactions()
+            ->where('date', '>=', Carbon::now()->subDays($days)->toDateString());
+
+        if ($category) {
+            $query->where('category', '=', $category);
+        }
+
+        return $query->count();
     }
 
     /**
@@ -156,10 +166,15 @@ trait Interactionable
      * @param $days
      * @return mixed
      */
-    public function queryPopularLast($query, $days)
+    public function queryPopularLast($query, $days, $category = null)
     {
-        return $query->withCount(['interactions' => function ($query) use ($days) {
+        return $query->withCount(['interactions' => function ($query) use ($days, $category) {
             $query->where('date', '>=', Carbon::now()->subDays($days)->toDateString());
+
+            if ($category) {
+                $query->where('category', '=', $category);
+            }
+
         }])->orderBy('interactions_count', 'desc');
     }
 }
