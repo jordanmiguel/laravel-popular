@@ -4,7 +4,6 @@ namespace JordanMiguel\LaravelPopular\Traits;
 
 use JordanMiguel\LaravelPopular\Models\Visit;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 trait Visitable
 {
@@ -15,19 +14,15 @@ trait Visitable
      */
     public function visit($ip = '')
     {
-        if(empty($ip)){
+        if (empty($ip)) {
             $ip = request()->ip();
         }
 
-        return self::insertOrUpdateVisit([
-            [
-                'ip' => $ip,
-                'date' => Carbon::now()->toDateString(),
-                'visitable_id' => $this->id,
-                'visitable_type' => (new \ReflectionClass($this))->getName(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
+        return Visit::updateOrCreate([
+            'ip' => $ip,
+            'date' => Carbon::now()->toDateString(),
+            'visitable_id' => $this->id,
+            'visitable_type' => (new \ReflectionClass($this))->getName(),
         ]);
     }
 
@@ -160,42 +155,5 @@ trait Visitable
         return $query->withCount(['visits' => function ($query) use ($days) {
             $query->where('date', '>=', Carbon::now()->subDays($days)->toDateString());
         }])->orderBy('visits_count', 'desc');
-    }
-
-    public static function insertOrUpdateVisit(array $rows)
-    {
-        $table = 'visits';
-
-        $first = reset($rows);
-
-        $columns = implode(
-            ',',
-            array_map(function ($value) {
-                return "$value";
-            }, array_keys($first))
-        );
-
-        $values = implode(
-            ',',
-            array_map(function ($row) {
-                return '(' . implode(
-                    ',',
-                    array_map(function ($value) {
-                        return '"'.str_replace('"', '""', $value).'"';
-                    }, $row)
-                ) . ')';
-            }, $rows)
-        );
-
-        $updates = implode(
-            ',',
-            array_map(function ($value) {
-                return "$value = VALUES($value)";
-            }, array_keys($first))
-        );
-
-        $sql = "INSERT INTO {$table}({$columns}) VALUES {$values} ON DUPLICATE KEY UPDATE {$updates}";
-
-        return DB::statement($sql);
     }
 }
