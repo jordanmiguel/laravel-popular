@@ -13,7 +13,7 @@ class AddIndexOnVisitableIdTypeDate extends Migration
      */
     public function up()
     {
-        Schema::create('visits', function (Blueprint $table) {
+        Schema::table('visits', function (Blueprint $table) {
             $table->index(['visitable_id', 'visitable_type', 'date']);
         });
     }
@@ -25,7 +25,7 @@ class AddIndexOnVisitableIdTypeDate extends Migration
      */
     public function down()
     {
-        Schema::create('visits', function (Blueprint $table) {
+        Schema::table('visits', function (Blueprint $table) {
             $table->dropIndex(['visitable_id', 'visitable_type', 'date']);
         });
     }
