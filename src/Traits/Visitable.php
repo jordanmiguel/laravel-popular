@@ -129,6 +129,16 @@ trait Visitable
     }
 
     /**
+     * Filter by popular in a given interval date
+     * @param $query
+     * @return mixed
+     */
+    public function scopePopularBetween($query, $from, $to)
+    {
+        return $query->queryPopularBetween($query, $from, $to);
+    }
+
+    /**
      * Filter by popular in all time
      * @param $query
      * @return mixed
@@ -150,6 +160,17 @@ trait Visitable
     }
 
     /**
+     * Return the visits of the model in a given interval date
+     * @return mixed
+     */
+    public function visitsBetween($from, $to)
+    {
+        return $this->visits()
+            ->whereBetween('date', [$from, $to])
+            ->count();
+    }
+
+    /**
      * Returns a Query Builder with Model ordered by popularity in the Last ($days) days
      * @param $query
      * @param $days
@@ -159,6 +180,19 @@ trait Visitable
     {
         return $query->withCount(['visits' => function ($query) use ($days) {
             $query->where('date', '>=', Carbon::now()->subDays($days)->toDateString());
+        }])->orderBy('visits_count', 'desc');
+    }
+
+    /**
+     * Returns a Query Builder with Model ordered by popularity in a given interval date
+     * @param $query
+     * @param $days
+     * @return mixed
+     */
+    public function queryPopularBetween($query, $from, $to)
+    {
+        return $query->withCount(['visits' => function ($query) use ($from, $to) {
+            $query->whereBetween('date', [$from, $to]);
         }])->orderBy('visits_count', 'desc');
     }
 
