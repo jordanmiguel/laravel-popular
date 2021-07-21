@@ -29,6 +29,7 @@ $post->visit();
 $post->visitsDay();
 $post->visitsWeek();
 $post->visitsMonth();
+$post->visitsBetween($from, $to);
 $post->visitsForever();
 
 // Ordering the posts by the most visited
@@ -38,6 +39,7 @@ Posts::popularDay()->get(); // Get posts ordered by the most visited on the last
 Posts::popularWeek()->get();
 Posts::popularMonth()->get();
 Posts::popularYear()->get();
+Posts::popularBetween($from, $to)->get(); // Get posts ordered by the most visited in a given interval date
 Posts::popularAllTime()->get();
 ```
 
