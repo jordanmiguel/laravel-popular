@@ -19,7 +19,7 @@ trait Visitable
             $ip = request()->ip();
         }
 
-        return self::insertOrUpdateVisit([
+        return $this->visits()->updateOrCreate(
             [
                 'ip' => $ip,
                 'date' => Carbon::now()->toDateString(),
@@ -28,7 +28,7 @@ trait Visitable
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
-        ]);
+        );
     }
 
     /**
@@ -194,42 +194,5 @@ trait Visitable
         return $query->withCount(['visits' => function ($query) use ($from, $to) {
             $query->whereBetween('date', [$from, $to]);
         }])->orderBy('visits_count', 'desc');
-    }
-
-    public static function insertOrUpdateVisit(array $rows)
-    {
-        $table = 'visits';
-
-        $first = reset($rows);
-
-        $columns = implode(
-            ',',
-            array_map(function ($value) {
-                return "$value";
-            }, array_keys($first))
-        );
-
-        $values = implode(
-            ',',
-            array_map(function ($row) {
-                return '(' . implode(
-                    ',',
-                    array_map(function ($value) {
-                        return '"'.str_replace('"', '""', $value).'"';
-                    }, $row)
-                ) . ')';
-            }, $rows)
-        );
-
-        $updates = implode(
-            ',',
-            array_map(function ($value) {
-                return "$value = VALUES($value)";
-            }, array_keys($first))
-        );
-
-        $sql = "INSERT INTO {$table}({$columns}) VALUES {$values} ON DUPLICATE KEY UPDATE {$updates}";
-
-        return DB::statement($sql);
     }
 }
