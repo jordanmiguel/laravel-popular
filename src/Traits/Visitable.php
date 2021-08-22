@@ -25,8 +25,6 @@ trait Visitable
                 'date' => Carbon::now()->toDateString(),
                 'visitable_id' => $this->id,
                 'visitable_type' => (new \ReflectionClass($this))->getName(),
-                'created_at' => now(),
-                'updated_at' => now(),
             ]
         );
     }
