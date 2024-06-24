@@ -5,6 +5,11 @@
 
 With Laravel Popular Package you can Track your most popular Eloquent Models based on unique hits in a time range and then sort by popularity in a time frame.
 
+# Discontinued
+
+This project is not maintained anymore. We encourage you to use another well maintained solution that can archieve everything in here:
+https://github.com/cyrildewit/eloquent-viewable
+
 ## Usage
 
 Use the visitable trait on the model you intend to track
